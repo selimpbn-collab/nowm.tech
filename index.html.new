@@ -1445,8 +1445,7 @@ function showChatMessage(message, isUser = false) {
     const div = document.createElement('div');
     div.className = `chat-bubble ${isUser ? 'chat-bubble-soon' : ''}`;
     div.textContent = message;
-    const first = container.querySelector('.chat-bubble');
-    if (first) first.replaceWith(div);
+    // Append the new message (no replacement): bubbles queue while typing.
     container.appendChild(div);
     container.scrollTop = container.scrollHeight;
 }
@@ -1495,8 +1494,8 @@ function simulateTyping() {
         const typingDiv = document.createElement('div');
         typingDiv.className = 'chat-bubble-soon';
         typingDiv.innerHTML = '<span></span><span></span><span></span>';
-        const first = container.querySelector('.chat-bubble');
-        if (first) first.replaceWith(typingDiv);
+        // Show a typing indicator after the last message (append).
+        container.appendChild(typingDiv);
         container.scrollTop = container.scrollHeight;
 
         const interval = setInterval(() => {
