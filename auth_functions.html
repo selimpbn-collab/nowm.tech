@@ -1,0 +1,268 @@
+# Auto-generated authentication functions for nowm.tech
+# This file is appended to index.html
+
+<!-- Authentication & Admin Scripts -->
+<script>
+// ===== User Authentication =====
+const STORAGE_KEYS = {
+    users: 'nowm_users',
+    currentUser: 'nowm_current_user',
+    admin: 'nowm_admin'
+};
+
+function getUsers() {
+    const users = localStorage.getItem(STORAGE_KEYS.users);
+    return users ? JSON.parse(users) : [];
+}
+
+function saveUsers(users) {
+    localStorage.setItem(STORAGE_KEYS.users, JSON.stringify(users));
+}
+
+function getCurrentUser() {
+    return localStorage.getItem(STORAGE_KEYS.currentUser);
+}
+
+function setCurrentUser(email) {
+    localStorage.setItem(STORAGE_KEYS.currentUser, email);
+}
+
+function clearCurrentUser() {
+    localStorage.removeItem(STORAGE_KEYS.currentUser);
+}
+
+function getAdmin() {
+    return localStorage.getItem(STORAGE_KEYS.admin);
+}
+
+function setAdmin(adminData) {
+    localStorage.setItem(STORAGE_KEYS.admin, JSON.stringify(adminData));
+}
+
+function hashPassword(password) {
+    return new Promise((resolve) => {
+        const encoder = new TextEncoder();
+        crypto.subtle.digest('SHA-256', encoder.encode(password))
+            .then(hash => {
+                let hashString = '';
+                const bytes = new Uint8Array(hash);
+                for (let i = 0; i < bytes.length; i++) {
+                    hashString += String.fromCharCode(bytes[i]);
+                }
+                resolve(btoa(hashString));
+            });
+    });
+}
+
+// Show login modal
+function showLoginModal() {
+    document.getElementById('authTitle').textContent = 'Login';
+    document.getElementById('loginForm').style.display = 'block';
+    document.getElementById('registerForm').style.display = 'none';
+    document.getElementById('authModal').classList.remove('hidden');
+}
+
+// Show register modal
+function showRegisterModal() {
+    document.getElementById('authTitle').textContent = 'Create Account';
+    document.getElementById('loginForm').style.display = 'none';
+    document.getElementById('registerForm').style.display = 'block';
+    document.getElementById('authModal').classList.remove('hidden');
+}
+
+// Close auth modal
+function closeAuthModal() {
+    document.getElementById('authModal').classList.add('hidden');
+    document.getElementById('loginForm').reset();
+    document.getElementById('registerForm').reset();
+}
+
+// Handle login
+document.getElementById('loginForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const email = document.getElementById('loginEmail').value.trim();
+    const password = document.getElementById('loginPassword').value;
+    
+    if (!email || !password) {
+        showToast('Please fill in all fields');
+        return;
+    }
+    
+    const users = getUsers();
+    let user = null;
+    for (const u of users) {
+        if (u.email === email) {
+            const hashed = await hashPassword(password);
+            if (u.password === hashed) {
+                user = u;
+                break;
+            }
+        }
+    }
+    
+    if (!user) {
+        showToast('Invalid email or password');
+        return;
+    }
+    
+    setCurrentUser(email);
+    showToast('Logged in successfully');
+    closeAuthModal();
+    updateAuthButtons();
+});
+
+// Handle registration
+document.getElementById('registerForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const name = document.getElementById('registerName').value.trim();
+    const email = document.getElementById('registerEmail').value.trim();
+    const password = document.getElementById('registerPassword').value;
+    const confirmPassword = document.getElementById('registerConfirmPassword').value;
+    
+    if (!name || !email || !password || !confirmPassword) {
+        showToast('Please fill in all fields');
+        return;
+    }
+    
+    if (password !== confirmPassword) {
+        showToast('Passwords do not match');
+        return;
+    }
+    
+    if (password.length < 6) {
+        showToast('Password must be at least 6 characters');
+        return;
+    }
+    
+    const users = getUsers();
+    if (users.find(u => u.email === email)) {
+        showToast('Email already exists. Please login.');
+        return;
+    }
+    
+    const hashedPassword = await hashPassword(password);
+    const newUser = {
+        id: Date.now().toString(),
+        name,
+        email,
+        password: hashedPassword
+    };
+    
+    users.push(newUser);
+    saveUsers(users);
+    
+    showToast('Account created successfully. Please login.');
+    closeAuthModal();
+    showLoginModal();
+});
+
+// Update auth buttons
+function updateAuthButtons() {
+    const authButtons = document.getElementById('authButtons');
+    if (!authButtons) return;
+    
+    const currentUser = getCurrentUser();
+    if (currentUser) {
+        authButtons.innerHTML = `
+            <span class="text-sm text-slate-600 dark:text-slate-300 font-mono">
+                👤 ${currentUser.split('@')[0]}
+            </span>
+            <button onclick="logout()" class="text-sm text-slate-500 hover:text-red-500 transition-colors">
+                <i class="fas fa-sign-out-alt"></i> Logout
+            </button>
+        `;
+    } else {
+        authButtons.innerHTML = `
+            <button onclick="showLoginModal()" class="text-sm text-slate-600 hover:text-brand-500 transition-colors">
+                <i class="fas fa-sign-in-alt"></i> Login
+            </button>
+            <button onclick="showRegisterModal()" class="text-sm bg-brand-500 text-white px-3 py-1.5 rounded-lg hover:bg-brand-400 transition-colors">
+                <i class="fas fa-user-plus"></i> Register
+            </button>
+        `;
+    }
+}
+
+// Logout
+function logout() {
+    clearCurrentUser();
+    showToast('Logged out successfully');
+    updateAuthButtons();
+}
+
+// Show toast helper
+function showToast(message) {
+    const toast = document.createElement('div');
+    toast.className = 'fixed bottom-20 right-5 z-50 bg-brand-600 text-white px-4 py-2 rounded-xl font-mono text-sm';
+    toast.textContent = '✓ ' + message;
+    document.body.appendChild(toast);
+    setTimeout(() => {
+        toast.remove();
+    }, 3000);
+}
+
+// Admin login modal
+function showAdminLogin() {
+    var modal = document.createElement('div');
+    modal.className = 'fixed inset-0 z-50 hidden bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4';
+    modal.id = 'adminLoginModal';
+    modal.innerHTML = '';
+    var content = '<div class="glass w-full max-w-md rounded-2xl overflow-hidden shadow-2xl">';
+    content += '<div class="p-6 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between">';
+    content += '<h3 class="text-xl font-bold text-slate-900 dark:text-white font-mono">Admin Panel</h3>';
+    content += '<button onclick="document.getElementById(\'adminLoginModal\').classList.add(\'hidden\')" class="p-2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 rounded-lg transition-colors">';
+    content += '<i class="fas fa-times"></i>';
+    content += '</button>';
+    content += '</div>';
+    content += '<div class="p-6 space-y-4">';
+    content += '<div class="space-y-3">';
+    content += '<div><label class="block text-xs font-mono font-medium text-slate-700 dark:text-slate-300 mb-1">Email</label>';
+    content += '<input type="email" id="adminEmail" class="w-full px-4 py-3 text-sm rounded-xl bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 focus:outline-none focus:border-brand-500 text-slate-800 dark:text-slate-200 font-mono" placeholder="admin@nowm.tech">';
+    content += '</div>';
+    content += '<div><label class="block text-xs font-mono font-medium text-slate-700 dark:text-slate-300 mb-1">Password</label>';
+    content += '<input type="password" id="adminPassword" class="w-full px-4 py-3 text-sm rounded-xl bg-white dark:bg-slate-950 border border-slate-200 dark:border-slate-800 focus:outline-none focus:border-brand-500 text-slate-800 dark:text-slate-200 font-mono" placeholder="Admin password">';
+    content += '</div>';
+    content += '<button onclick="adminLogin()" class="w-full py-3 rounded-xl bg-brand-500 text-white font-semibold hover:bg-brand-400 transition-all">';
+    content += '<i class="fas fa-lock mr-2"></i>Login';
+    content += '</button>';
+    content += '</div>';
+    content += '</div>';
+    content += '</div>';
+    modal.innerHTML += content;
+    document.body.appendChild(modal);
+}
+
+// Admin login handler
+function adminLogin() {
+    var email = document.getElementById('adminEmail').value.trim();
+    var password = document.getElementById('adminPassword').value;
+    
+    // Demo credentials: admin@nowm.tech / admin123
+    if (email === 'admin@nowm.tech' && password === 'admin123') {
+        var adminData = { email: 'admin@nowm.tech', name: 'Admin' };
+        setAdmin(adminData);
+        showToast('Admin logged in successfully');
+        document.getElementById('adminLoginModal').classList.add('hidden');
+        var adminSection = document.getElementById('adminSection');
+        if (adminSection) {
+            adminSection.classList.remove('hidden');
+        }
+        updateAuthButtons();
+    } else {
+        showToast('Invalid admin credentials');
+    }
+}
+
+// Initialize on load
+window.addEventListener('load', function() {
+    updateAuthButtons();
+    // Check for admin access
+    var admin = getAdmin();
+    if (admin) {
+        var adminSection = document.getElementById('adminSection');
+        if (adminSection) {
+            adminSection.classList.remove('hidden');
+        }
+    }
+});
+</script>

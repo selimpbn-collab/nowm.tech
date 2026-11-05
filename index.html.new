@@ -1447,6 +1447,7 @@ function showChatMessage(message, isUser = false) {
     div.textContent = message;
     const first = container.querySelector('.chat-bubble');
     if (first) first.replaceWith(div);
+    container.appendChild(div);
     container.scrollTop = container.scrollHeight;
 }
 
@@ -1681,6 +1682,7 @@ function init() {
 
     // Testimonials
     renderTestimonials();
+    renderComparison();
 
     // CTA
     renderCta();
@@ -1811,6 +1813,7 @@ function init() {
     // Fire initial renders
     renderFaq();
     renderTestimonials();
+    renderComparison();
     renderCta();
     renderStore();
 
