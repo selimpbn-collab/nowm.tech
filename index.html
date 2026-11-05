@@ -432,8 +432,22 @@
                         <span class="text-xs font-mono px-2.5 py-1 rounded bg-emerald-500/10 text-emerald-500">$149.00</span>
                     </div>
                     <h3 class="text-lg font-bold text-slate-900 dark:text-white">Mohit Maya EA</h3>
-                    <p class="text-sm text-slate-600 dark:text-slate-400">Averaged ladder with shared basket TP for hedging accounts.</p>
-                    <p class="text-xs text-slate-500 dark:text-slate-400 font-mono">v1.02 · MT5 Build 4000+</p>
+                    <p class="text-sm text-slate-600 dark:text-slate-400 mt-2 leading-relaxed">
+                        MT5 Expert Advisor for XAUUSD (gold) on hedging accounts. An averaging ladder that opens a sell, adds bigger sells as price rises against it, and closes the whole basket together when price falls back to one shared TP.
+                    </p>
+                    <div class="mt-3 space-y-2 text-xs text-slate-600 dark:text-slate-400 font-mono leading-relaxed">
+                        <p class="flex items-start gap-2"><span class="text-emerald-500 mt-0.5">•</span><span><b>Start:</b> press START, opens SELL 0.01 at market</span></p>
+                        <p class="flex items-start gap-2"><span class="text-emerald-500 mt-0.5">•</span><span><b>Ladder:</b> adds sell each time price rises one grid step above last entry (0.80 → 3.50)</span></p>
+                        <p class="flex items-start gap-2"><span class="text-emerald-500 mt-0.5">•</span><span><b>Lots:</b> 0.01...0.11 linear (11 levels), then ~8% larger, capped at 1.00/order</span></p>
+                        <p class="flex items-start gap-2"><span class="text-emerald-500 mt-0.5">•</span><span><b>Exit:</b> lot-weighted avg entry − 4.0 TP, all positions close same second</span></p>
+                        <p class="flex items-start gap-2"><span class="text-emerald-500 mt-0.5">•</span><span><b>Repeat:</b> short cooldown, then new cycle</span></p>
+                    </div>
+                    <div class="mt-3 flex flex-wrap gap-2 text-xs font-mono">
+                        <span class="px-2 py-1 rounded bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300">Hedging Account</span>
+                        <span class="px-2 py-1 rounded bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300">Cent Account</span>
+                        <span class="px-2 py-1 rounded bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300">MT5 4000+</span>
+                        <span class="px-2 py-1 rounded bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300">XAUUSD .sc</span>
+                    </div>
                     <button class="mt-4 px-4 py-2 rounded-xl bg-brand-500 text-white text-sm font-mono hover:bg-brand-400 transition-all buy-btn" data-product="mohit-maya">
                         <i class="fas fa-cart-plus ml-2"></i>Buy Now
                     </button>
@@ -446,8 +460,22 @@
                         <span class="text-xs font-mono px-2.5 py-1 rounded bg-emerald-500/10 text-emerald-500">$199.00</span>
                     </div>
                     <h3 class="text-lg font-bold text-slate-900 dark:text-white">GoldLadderBasket EA</h3>
-                    <p class="text-sm text-slate-600 dark:text-slate-400">Dynamic martingale-style ladder with linear-then-geometric lot sizing and basket TP.</p>
-                    <p class="text-xs text-slate-500 dark:text-slate-400 font-mono">v2.0 · MT5 Build 4000+</p>
+                    <p class="text-sm text-slate-600 dark:text-slate-400 mt-2 leading-relaxed">
+                        Dynamic martingale-style ladder with linear-then-geometric lot sizing and basket TP. Adds market orders while price moves against the basket, then closes all positions together when the target is hit.
+                    </p>
+                    <div class="mt-3 space-y-2 text-xs text-slate-600 dark:text-slate-400 font-mono leading-relaxed">
+                        <p class="flex items-start gap-2"><span class="text-emerald-500 mt-0.5">•</span><span><b>Entry:</b> cycle starts with SELL 0.01 at market</span></p>
+                        <p class="flex items-start gap-2"><span class="text-emerald-500 mt-0.5">•</span><span><b>Ladder:</b> GridStep(n) = min(BaseStep + (n-1)*StepGrowth, MaxStep)</span></p>
+                        <p class="flex items-start gap-2"><span class="text-emerald-500 mt-0.5">•</span><span><b>Lots:</b> 0.01...0.11 linear, then ~8% larger each level, capped at 1.00</span></p>
+                        <p class="flex items-start gap-2"><span class="text-emerald-500 mt-0.5">•</span><span><b>Exit:</b> close ALL positions together when floating profit >= BasketTP_Money</span></p>
+                        <p class="flex items-start gap-2"><span class="text-emerald-500 mt-0.5">•</span><span><b>Visuals:</b> dashed TP line, live P/L labels for every entry</span></p>
+                    </div>
+                    <div class="mt-3 flex flex-wrap gap-2 text-xs font-mono">
+                        <span class="px-2 py-1 rounded bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300">Hedging Account</span>
+                        <span class="px-2 py-1 rounded bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300">Cent Account (USC)</span>
+                        <span class="px-2 py-1 rounded bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300">MT5 4000+</span>
+                        <span class="px-2 py-1 rounded bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300">XAUUSD .sc</span>
+                    </div>
                     <button class="mt-4 px-4 py-2 rounded-xl bg-brand-500 text-white text-sm font-mono hover:bg-brand-400 transition-all buy-btn" data-product="gold-ladder-basket">
                         <i class="fas fa-cart-plus ml-2"></i>Buy Now
                     </button>
@@ -924,14 +952,16 @@ const productData = {
         version: '1.02',
         symbol: 'XAUUSD',
         price: 149.00,
-        description: 'Averaged ladder with shared basket TP for hedging accounts. 50–60 positions, linear+geometric lot growth, dynamic grid spacing.',
+        description: 'MT5 Expert Advisor for XAUUSD on hedging accounts. An averaging ladder: opens a sell, adds bigger sells as price rises against it, closes the whole basket together when price falls back to one shared TP.',
         features: [
+            'Start: SELL 0.01 at market',
+            'Ladder: grid step 0.80 → 3.50, widening 0.12/level',
+            'Lots: 0.01...0.11 linear (11 levels), then ~8% larger, capped at 1.00',
+            'Exit: lot-weighted avg entry − 4.0 TP, all positions close same second',
+            'Repeat: short cooldown, then new cycle',
             'Hedge account compatible',
-            '50–60 position basket',
-            'Dynamic grid spacing (0.80→3.50)',
-            'Linear+geometric lot growth',
-            'Cooldown after close',
-            'Basket TP on shared profit target'
+            'Cent account (USC)',
+            'XAUUSD with broker suffix (.sc)'
         ],
         files: ['MohitMaya.mq5', 'README.md', 'config.yaml'],
         repo: 'https://github.com/selimpbn-collab/nowm.tech',
@@ -942,17 +972,20 @@ const productData = {
         version: '2.0',
         symbol: 'XAUUSD',
         price: 199.00,
-        description: 'Dynamic martingale-style ladder with linear-then-geometric lot sizing and basket TP.',
+        description: 'Dynamic martingale-style ladder with linear-then-geometric lot sizing and basket TP. Adds market orders while price moves against the basket, then closes all positions together when the target is hit.',
         features: [
-            'Linear lot growth to 0.11, then geometric 1.08x',
-            'Dynamic grid spacing (0.80→3.50)',
-            'Basket TP on shared profit target',
-            'Cooldown and protection rules',
-            'Hedge mode support'
+            'Start: SELL 0.01 at market',
+            'Ladder: GridStep(n) = min(BaseStep + (n-1)*StepGrowth, MaxStep)',
+            'Lots: 0.01...0.11 linear, then ~8% larger each level, capped at 1.00',
+            'Exit: close ALL positions together when floating profit >= BasketTP_Money',
+            'Visual: dashed TP line, live P/L labels for every entry',
+            'Hedge account compatible',
+            'Cent account (USC)',
+            'XAUUSD with broker suffix (.sc)'
         ],
         files: ['GoldLadderBasket.mq5', 'README.md', 'config.yaml'],
         repo: 'https://github.com/selimpbn-collab/nowm.tech',
-        keywords: ['gold', 'xauusd', 'martingale', 'ladder', 'basket', 'mt5']
+        keywords: ['xauusd', 'martingale', 'ladder', 'basket', 'mt5', 'trading']
     },
     goldScalper: {
         title: 'Gold Scalper Pro',
