@@ -23,9 +23,9 @@ on:
   workflow_dispatch:
 
 env:
-  AZURE_WEBAPP_NAME: nowm-tech   # set this to your application's name
-  AZURE_WEBAPP_PACKAGE_PATH: '.'      # set this to the path to your web app project, defaults to the repository root
-  NODE_VERSION: '20.x'                # set this to the node version to use
+  AZURE_WEBAPP_NAME: nowm-tech
+  AZURE_WEBAPP_PACKAGE_PATH: '.'
+  NODE_VERSION: '20.x'
 
 permissions:
   contents: read
@@ -36,17 +36,14 @@ jobs:
     steps:
     - uses: actions/checkout@v4
 
-    - name: Set up Node.js
-      uses: actions/setup-node@v4
-      with:
-        node-version: ${{ env.NODE_VERSION }}
-        cache: 'npm'
-
-    - name: npm install, build, and test
+    # Static site - no npm build needed
+    - name: Verify HTML files exist
       run: |
-        npm install
-        npm run build --if-present
-        npm run test --if-present
+        if [ ! -f index.html ]; then
+          echo "No index.html found!"
+          exit 1
+        fi
+        echo "Site files found"
 
     - name: Upload artifact for deployment job
       uses: actions/upload-artifact@v4
