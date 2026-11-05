@@ -413,5 +413,118 @@
             }
         }
     </script>
+
+    <!-- Hermes Chat Widget -->
+    <div id="chatWidget" class="fixed bottom-20 right-5 z-50 hidden">
+        <div class="chat-bubble-soon flex items-center gap-2 bg-slate-500/10 border border-brand-500/20 rounded-2xl p-3 cursor-pointer" id="chatToggle">
+            <i class="fas fa-comments text-brand-500"></i>
+            <span class="font-mono text-sm">Hermes Assistant</span>
+        </div>
+        <div id="chatWidgetContainer" class="fixed bottom-20 right-5 z-50 hidden w-80 max-w-[calc(100vw-2rem)] bg-slate-900 dark:bg-slate-950 rounded-2xl shadow-2xl border border-slate-800 overflow-hidden">
+            <div class="px-4 py-3 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between">
+                <div class="flex items-center gap-2">
+                    <div class="w-3 h-3 rounded-full bg-emerald-400"></div>
+                    <h4 class="text-sm font-mono font-bold text-white">Hermes Assistant</h4>
+                    <span class="text-xs font-mono bg-emerald-500/10 text-emerald-500 px-2 py-0.5 rounded-full">Online</span>
+                </div>
+                <button id="closeChatBtn" class="text-slate-400 hover:text-slate-600" aria-label="Close chat"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="p-4 space-y-3 h-80 overflow-y-auto">
+                <div class="chat-bubble-soon">Ask me anything about trading, EAs, or your website...</div>
+            </div>
+            <div class="p-3 border-t border-slate-200 dark:border-slate-800">
+                <div class="flex gap-2">
+                    <input type="text" id="chatInput" class="flex-1 px-4 py-2 rounded-xl bg-slate-900 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 text-sm text-slate-200 font-mono focus:outline-none focus:border-brand-500" placeholder="Ask about trading, EAs, or website...">
+                    <button id="chatSendBtn" class="px-4 py-2 bg-brand-500 text-white rounded-xl hover:bg-brand-400 transition-all text-sm" aria-label="Send message"><i class="fas fa-paper-plane"></i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const chatToggle = document.getElementById('chatToggle');
+        const chatWidget = document.getElementById('chatWidgetContainer');
+        const chatInput = document.getElementById('chatInput');
+        const chatSendBtn = document.getElementById('chatSendBtn');
+        const closeChatBtn = document.getElementById('closeChatBtn');
+
+        chatSendBtn.addEventListener('click', sendMessage);
+        chatInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                sendMessage();
+            }
+        });
+
+        chatToggle.addEventListener('click', () => {
+            chatWidget.classList.toggle('hidden');
+            if (chatWidget.classList.contains('hidden')) {
+                const container = document.getElementById('chatWidgetContainer');
+                const messages = container.querySelectorAll('.chat-bubble');
+                messages.forEach((el) => el.remove());
+                const welcome = document.createElement('div');
+                welcome.className = 'chat-bubble-soon';
+                welcome.textContent = 'Ask me anything about trading, EAs, or your website.';
+                container.appendChild(welcome);
+            }
+        });
+
+        closeChatBtn.addEventListener('click', () => {
+            chatWidget.classList.add('hidden');
+        });
+
+        function sendMessage() {
+            const input = document.getElementById('chatInput');
+            const message = input.value.trim();
+            if (!message) return;
+
+            const container = document.getElementById('chatWidgetContainer');
+            const messages = container.querySelectorAll('.chat-bubble');
+            messages.forEach((el) => el.remove());
+
+            const userMsg = document.createElement('div');
+            userMsg.className = 'chat-bubble';
+            userMsg.textContent = 'You: ' + message;
+            container.querySelector('.p-4.space-y-3').appendChild(userMsg);
+
+            const typing = document.createElement('div');
+            typing.className = 'flex items-center gap-2 text-xs text-slate-500 px-3';
+            typing.innerHTML = '<span><i class="fas fa-spinner fa-spin"></i></span>';
+            container.querySelector('.p-4.space-y-3').appendChild(typing);
+
+            // Send to backend
+            fetch('/api/chat', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({ message: message })
+            })
+            .then(response => response.json())
+            .then(data => {
+                typing.remove();
+                const botMsg = document.createElement('div');
+                botMsg.className = 'chat-bubble';
+                botMsg.textContent = 'Hermes: ' + data.response;
+                container.querySelector('.p-4.space-y-3').appendChild(botMsg);
+            })
+            .catch(error => {
+                typing.remove();
+                const errorMsg = document.createElement('div');
+                errorMsg.className = 'chat-bubble';
+                errorMsg.textContent = 'Error: ' + error.message;
+                container.querySelector('.p-4.space-y-3').appendChild(errorMsg);
+            });
+
+            input.value = '';
+        }
+
+        // Keyboard shortcut: Ctrl+Shift+C to toggle chat
+        document.addEventListener('keydown', (e) => {
+            if (e.ctrlKey && e.shiftKey && e.key === 'C') {
+                e.preventDefault();
+                chatToggle.click();
+            }
+        });
+    </script>
 </body>
+</html></body>
 </html>
