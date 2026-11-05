@@ -166,40 +166,55 @@ class ChatHandler(BaseHTTPRequestHandler):
             data = json.loads(body)
             message = data.get('message', '')
 
-            # Send to Telegram bot
-            bot_token = TELEGRAM_BOT_TOKEN
-            url = f'https://api.telegram.org/bot{bot_token}/sendMessage'
-            
-            # For now, we'll return a simulated response
-            # In production, you would use the Hermes API or a proper chat service
-            response_text = f"🤖 Hermes: I received your message: '{message}'"
-            
-            # You can connect this to your actual Hermes agent here
-            # For now, return a helpful response
-            responses = {
-                'price': '📈 Gold (XAUUSD) is currently around 3969.38. The market is moving...',
-                'EA': '💰 Mohit Maya EA is $149, GoldLadderBasket EA is $199. Available for purchase!',
-                'help': 'I can help you with: product info, pricing, trading signals, website status, and more!',
-                'default': f'🤖 I received: "{message}". Please message me on Telegram for a response.'
+            # Use Hermes AI agent via Nous inference API
+            import urllib.request
+            import json as json_lib
+
+            hermes_payload = {
+                "model": "upstage/solar-mini4:free",
+                "messages": [
+                    {"role": "user", "content": message}
+                ],
+                "max_tokens": 500,
+                "temperature": 0.7
             }
 
-            # Try to match keywords
-            message_lower = message.lower()
-            if any(word in message_lower for word in ['price', 'cost', 'money', 'how much']):
-                response_text = responses['price']
-            elif any(word in message_lower for word in ['ea', 'expert', 'trading', 'software']):
-                response_text = responses['ea']
-            elif any(word in message_lower for word in ['help', 'what can', 'how do']):
-                response_text = responses['help']
-            else:
-                response_text = responses['default']
+            hermes_url = "https://inference-api.nousresearch.com/v1/chat/completions"
+            hermes_headers = {
+                "Content-Type": "application/json"
+            }
+
+            try:
+                import os
+                api_key = os.environ.get('NOUS_API_KEY', '')
+                if api_key:
+                    hermes_headers['Authorization'] = f'Bearer {api_key}'
+
+                hermes_data = json_lib.dumps(hermes_payload).encode('utf-8')
+                hermes_request = urllib.request.Request(
+                    hermes_url,
+                    data=hermes_data,
+                    headers=hermes_headers,
+                    method='POST'
+                )
+
+                with urllib.request.urlopen(hermes_request, timeout=30) as response:
+                    hermes_result = json_lib.loads(response.read().decode())
+                    if 'choices' in hermes_result and len(hermes_result['choices']) > 0:
+                        response_text = hermes_result['choices'][0]['message']['content']
+                    else:
+                        response_text = "I received your message but the AI response is unavailable."
+
+            except Exception as e:
+                response_text = "I received your message but the AI response is unavailable."
 
             self.send_response(200)
             self.send_header('Content-Type', 'application/json')
             self.end_headers()
             self.wfile.write(json.dumps({
                 'response': response_text,
-                'status': 'ok'
+                'status': 'ok',
+                'source': 'hermes'
             }).encode())
         else:
             self.send_response(404)
