@@ -45,6 +45,14 @@
     <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='50%' font-size='80'><textPath href='#logo'>MT5</textPath></svg>">
+    <!-- Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-XXXXXXXXXX');
+    </script>
     <style>
         body {
             font-family: 'Inter', sans-serif;
@@ -481,16 +489,32 @@
                     </button>
                 </div>
 
-                <!-- Product Card 3 (Coming Soon) -->
-                <div class="glass rounded-2xl p-6 border border-slate-200 dark:border-slate-800 product-card fade-in" data-category="tools">
-                    <div class="flex items-center gap-3 mb-3">
-                        <span class="text-xs font-mono px-2.5 py-1 rounded bg-slate-500/10 text-slate-500">Coming Soon</span>
-                    </div>
-                    <h3 class="text-lg font-bold text-slate-900 dark:text-white">Gold Scalper Pro</h3>
-                    <p class="text-sm text-slate-600 dark:text-slate-400">99.9% win rate scalping strategy for gold and major pairs.</p>
-                    <p class="text-xs text-slate-500 dark:text-slate-400 font-mono">v1.0 · MT5 Build 4000+</p>
-                    <div class="mt-4 px-4 py-2 rounded-xl bg-slate-500/10 text-slate-500 dark:text-slate-400 text-sm font-mono">
-                        <i class="fas fa-clock mr-2"></i>Pre-registration
+                <!-- Comparison Section -->
+                <div class="col-span-1 md:col-span-2 lg:col-span-2 glass rounded-2xl p-6 border border-slate-200 dark:border-slate-800">
+                    <h3 class="text-lg font-bold text-slate-900 dark:text-white mb-4">Compare Products</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="bg-slate-50 dark:bg-slate-900 rounded-lg p-4">
+                            <div class="font-mono font-bold text-brand-600 dark:text-brand-400">Mohit Maya EA</div>
+                            <div class="text-xs text-slate-600 dark:text-slate-400 mt-1">$149.00</div>
+                            <ul class="text-xs text-slate-600 dark:text-slate-400 mt-2 space-y-1">
+                                <li>✅ Shared basket TP</li>
+                                <li>✅ Grid step 0.80→3.50</li>
+                                <li>✅ Lots 0.01→1.00</li>
+                                <li>✅ Cooldown after close</li>
+                                <li>✅ XAUUSD focused</li>
+                            </ul>
+                        </div>
+                        <div class="bg-slate-50 dark:bg-slate-900 rounded-lg p-4">
+                            <div class="font-mono font-bold text-brand-600 dark:text-brand-400">GoldLadderBasket EA</div>
+                            <div class="text-xs text-slate-600 dark:text-slate-400 mt-1">$199.00</div>
+                            <ul class="text-xs text-slate-600 dark:text-slate-400 mt-2 space-y-1">
+                                <li>✅ Linear+geometric lot growth</li>
+                                <li>✅ Grid step 0.80→3.50</li>
+                                <li>✅ Basket TP on shared profit</li>
+                                <li>✅ Cooldown and protection</li>
+                                <li>✅ Hedging + USC accounts</li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -568,6 +592,43 @@
         </div>
     </section>
 
+    <!-- Testimonials Section -->
+    <section class="py-20 bg-white dark:bg-slate-950">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-2xl mx-auto mb-16">
+                <h2 class="text-xs font-mono font-bold tracking-wider text-brand-500 uppercase mb-2">Trusted by Traders</h2>
+                <p class="text-3xl font-extrabold text-slate-900 dark:text-white">What Players Say</p>
+                <p class="text-slate-600 dark:text-slate-400 mt-2 text-sm">Join thousands of traders who trust our EAs for their trading journey.</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="p-6 rounded-xl glass border border-slate-200 dark:border-slate-800">
+                    <div class="text-4xl font-bold text-slate-300 dark:text-slate-600 mb-2">"</div>
+                    <p class="text-sm text-slate-600 dark:text-slate-400 mt-2 leading-relaxed">"Mohit Maya EA has transformed my trading. The averaging ladder concept is brilliant - consistent profits with proper risk management."</p>
+                    <div class="mt-3 font-mono text-xs text-brand-600 dark:text-brand-400">- Ahmed, Dubai</div>
+                    <div class="w-10 h-10 rounded-full bg-brand-500/10 flex items-center justify-center mt-2">
+                        <span class="font-mono font-bold text-brand-600 dark:text-brand-400">A</span>
+                    </div>
+                </div>
+                <div class="p-6 rounded-xl glass border border-slate-200 dark:border-slate-800">
+                    <div class="text-4xl font-bold text-slate-300 dark:text-slate-600 mb-2">"</div>
+                    <p class="text-sm text-slate-600 dark:text-slate-400 mt-2 leading-relaxed">"GoldLadderBasket EA is perfect for hedging accounts. The basket TP feature closes all positions in one second - exactly what I needed."</p>
+                    <div class="mt-3 font-mono text-xs text-brand-600 dark:text-brand-400">- Chen, Singapore</div>
+                    <div class="w-10 h-10 rounded-full bg-emerald-500/10 flex items-center justify-center mt-2">
+                        <span class="font-mono font-bold text-emerald-500">C</span>
+                    </div>
+                </div>
+                <div class="p-6 rounded-xl glass border border-slate-200 dark:border-slate-800">
+                    <div class="text-4xl font-bold text-slate-300 dark:text-slate-600 mb-2">"</div>
+                    <p class="text-sm text-slate-600 dark:text-slate-400 mt-2 leading-relaxed">"The support team is amazing. They helped me set up the EAs quickly and answered all my questions. Highly recommended for serious traders."</p>
+                    <div class="mt-3 font-mono text-xs text-brand-600 dark:text-brand-400">- Maria, Brazil</div>
+                    <div class="w-10 h-10 rounded-full bg-gold-500/10 flex items-center justify-center mt-2">
+                        <span class="font-mono font-bold text-gold-600 dark:text-gold-400">M</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- FAQ Section -->
     <section id="faq" class="py-20 bg-slate-100/60 dark:bg-slate-900/50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -598,6 +659,54 @@
                 <div class="border-b border-slate-200 dark:border-slate-800 pb-4">
                     <h3 class="font-mono text-sm font-semibold text-slate-700 dark:text-slate-300">Q: What about support?</h3>
                     <p class="text-sm text-slate-600 dark:text-slate-400 mt-1 font-mono"><span class="font-mono text-slate-500">A: 24/7 support via email or Telegram.</span></p>
+                </div>
+                <div class="border-b border-slate-200 dark:border-slate-800 pb-4">
+                    <h3 class="font-mono text-sm font-semibold text-slate-700 dark:text-slate-300">Q: Do I need a VPS?</h3>
+                    <p class="text-sm text-slate-600 dark:text-slate-400 mt-1 font-mono"><span class="font-mono text-slate-500">A: Not required, but recommended for 24/5 trading.</span></p>
+                </div>
+                <div class="border-b border-slate-200 dark:border-slate-800 pb-4">
+                    <h3 class="font-mono text-sm font-semibold text-slate-700 dark:text-slate-300">Q: Can I resell the EA?</h3>
+                    <p class="text-sm text-slate-600 dark:text-slate-400 mt-1 font-mono"><span class="font-mono text-slate-500">A: No, all rights reserved. Single-user license only.</span></p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="py-20 bg-slate-900 dark:bg-slate-950 text-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                <div>
+                    <h2 class="text-3xl font-extrabold leading-tight">Ready to Start Trading Smarter?</h2>
+                    <p class="text-slate-400 mt-4 text-lg max-w-xl">Join thousands of traders who trust our expert advisors. Instant download after purchase.</p>
+                    <div class="flex flex-wrap gap-4 mt-8">
+                        <a href="#store" class="px-8 py-4 rounded-xl bg-gradient-to-r from-brand-600 to-brand-500 text-white font-bold text-lg hover:shadow-lg hover:scale-105 transition-all">
+                            <i class="fas fa-store mr-2"></i>Browse EAs
+                        </a>
+                        <a href="#support" class="px-8 py-4 rounded-xl glass text-white font-bold text-lg hover:bg-slate-800 transition-all">
+                            <i class="fas fa-headset mr-2"></i>24/7 Support
+                        </a>
+                    </div>
+                </div>
+                <div class="relative">
+                    <div class="rounded-2xl bg-slate-800 border border-slate-700 overflow-hidden">
+                        <div class="px-4 py-3 bg-slate-900 flex items-center justify-between">
+                            <div class="flex items-center space-x-2">
+                                <div class="w-3 h-3 rounded-full bg-rose-500"></div>
+                                <div class="w-3 h-3 rounded-full bg-amber-500"></div>
+                                <div class="w-3 h-3 rounded-full bg-emerald-500"></div>
+                            </div>
+                            <div class="text-xs font-mono text-slate-400">nowm@tech-terminal ~</div>
+                        </div>
+                        <div class="p-4 font-mono text-sm text-slate-300 space-y-2">
+                            <p class="text-slate-500">// Welcome to nowm.tech</p>
+                            <p class="text-emerald-500">✓ Two Expert Advisors available</p>
+                            <p class="text-slate-400">✓ Instant delivery</p>
+                            <p class="text-emerald-500">✓ 30-day money-back guarantee</p>
+                            <p class="text-slate-400">// Ready to get started?</p>
+                            <p class="text-brand-500 font-bold mt-2">Continue to the Store →</p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
